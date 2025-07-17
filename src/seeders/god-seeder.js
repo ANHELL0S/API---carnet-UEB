@@ -14,11 +14,11 @@ export const seedGod = async () => {
 			return
 		}
 
-		const hashedPassword = await bcrypt.hash(env.CREDENTIALS_ADMIN_PASS, SALT_ROUNDS)
+		const hashedPassword = await bcrypt.hash(env.ADMIN_CREDENTIALS.PASS, SALT_ROUNDS)
 
 		const godUsers = [
 			{
-				identification_card: env.CREDENTIALS_ADMIN_USER,
+				identification_card: env.ADMIN_CREDENTIALS.USER,
 				password: hashedPassword,
 			},
 		]
