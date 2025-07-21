@@ -61,6 +61,7 @@ export class QrController {
 			return sendResponse(res, {
 				statusCode: error.statusCode || 500,
 				message: error.message,
+				data: error.existingQr,
 			})
 		}
 	}
