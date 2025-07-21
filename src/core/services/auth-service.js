@@ -64,17 +64,27 @@ class AuthService {
 		}
 	}
 
-	async logout(refreshToken) {
+	async logout(refreshToken, accessToken) {
 		await this.initialize()
 
-		const decoded = jwt.verify(refreshToken, env.JWT.SECRET)
+		const decodedAccess = jwt.verify(accessToken, env.JWT.SECRET)
+
+		const cedula = decodedAccess.user.session.user.cedula
 
 		await this.tokenModel.update(
 			{ used: true },
 			{
 				where: {
-					[Op.or]: [{ token: refreshToken }, { cl_fk: decoded.user.cedula }],
-					used: false,
+					[Op.or]: [
+						// Tokens específicos de esta sesión
+						{ token: { [Op.in]: [refreshToken, accessToken] } },
+						// Todos los tokens activos del usuario
+						{
+							cl_fk: cedula,
+							used: false,
+							token_type: { [Op.in]: ['access', 'refresh'] },
+						},
+					],
 				},
 			}
 		)

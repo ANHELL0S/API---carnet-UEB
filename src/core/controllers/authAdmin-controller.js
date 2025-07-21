@@ -37,7 +37,16 @@ export class AuthAdminController {
 
 	static async logout(req, res) {
 		try {
-			await authAdminService.logout(req.cookies.adminRefreshToken)
+			const { adminRefreshToken, adminAccessToken } = req.cookies
+
+			if (!adminRefreshToken || !adminAccessToken) {
+				return sendResponse(res, {
+					statusCode: 400,
+					message: 'No hay sesión activa',
+				})
+			}
+
+			await authAdminService.logout(adminRefreshToken, adminAccessToken)
 
 			// Limpiar cookies específicas de administrador
 			res.clearCookie('adminAccessToken')

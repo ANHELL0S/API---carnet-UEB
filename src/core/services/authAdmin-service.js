@@ -56,17 +56,23 @@ class AuthAdminService {
 		return this._generateAuthTokens(admin)
 	}
 
-	async logout(refreshToken) {
+	async logout(adminRefreshToken, adminAccessToken) {
 		await this.initialize()
-
-		jwt.verify(refreshToken, env.JWT.SECRET)
 
 		await this.tokenModel.update(
 			{ used: true },
 			{
 				where: {
-					[Op.or]: [{ token: refreshToken }, { cl_fk: 'ADMIN' }],
-					used: false,
+					[Op.or]: [
+						// Tokens específicos de esta sesión
+						{ token: { [Op.in]: [adminRefreshToken, adminAccessToken] } },
+						// Todos los tokens activos del usuario
+						{
+							cl_fk: 'ADMIN',
+							used: false,
+							token_type: { [Op.in]: ['access', 'refresh'] },
+						},
+					],
 				},
 			}
 		)

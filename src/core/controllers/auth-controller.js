@@ -38,16 +38,16 @@ export class AuthController {
 
 	static async logout(req, res) {
 		try {
-			const { refreshToken } = req.cookies
+			const { refreshToken, accessToken } = req.cookies
 
-			if (!refreshToken) {
+			if (!refreshToken || !accessToken) {
 				return sendResponse(res, {
 					statusCode: 400,
 					message: 'No hay sesión activa',
 				})
 			}
 
-			await authService.logout(refreshToken)
+			await authService.logout(refreshToken, accessToken)
 
 			// Limpiar cookies
 			res.clearCookie('accessToken')
