@@ -57,3 +57,10 @@ nota: solo si ya creaste la imagen previamente
 ```bash
 NODE_ENV=development docker-compose up
 ```
+
+Nota: si ya esta en produccion
+Solo levanta la imgen de docker creada con
+
+```bash
+docker start server-api-1
+```
