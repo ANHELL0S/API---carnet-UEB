@@ -41,3 +41,19 @@ docker run --name carnet_db \
  -v carnet_pgdata:/var/lib/postgresql/data \
 --restart unless-stopped \
 -d postgres:17.5
+
+# DOCKER COMPOSE
+
+Dentro de server ejecuta:
+Esto crea la iamgen de docker
+
+```bash
+NODE_ENV=development docker-compose up --build
+```
+
+Luego para leventar otra vez la imagen:
+nota: solo si ya creaste la imagen previamente
+
+```bash
+NODE_ENV=development docker-compose up
+```

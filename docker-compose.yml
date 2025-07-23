@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      args:
+        - NODE_ENV=${NODE_ENV:-production} # Para optimizar npm install
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.${NODE_ENV:-development} # Carga automática del .env correcto
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
