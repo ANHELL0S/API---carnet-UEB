@@ -10,6 +10,8 @@ import { TokenModel } from '../models/carnet/token-model.js'
 import { UsuariosModel } from '../models/sianet/usuarios-model.js'
 import { ThPersonalModel } from '../models/sianet/th_personal-model.js'
 import { SmeEstuClaveModel } from '../models/sianet/sme_estu_clave-model.js'
+import { EstudiantesModel } from '../models/sianet/estudiantes-model.js'
+import { CorreoUebModel } from '../models/sianet/correo_ueb-model.js'
 import { UsuariosSistemasModel } from '../models/sianet/usuarios_sistemas-model.js'
 
 class AuthService {
@@ -21,6 +23,8 @@ class AuthService {
 		this.usuariosModel = null
 		this.UsuariosSistemasModel = null
 		this.estuClaveModel = null
+		this.EstudiantesModel = null
+		this.CorreoUebModel = null
 		this.initialized = false
 	}
 
@@ -35,6 +39,8 @@ class AuthService {
 			this.usuariosModel = await UsuariosModel(this.sequelizeSianet)
 			this.usuariosSistemasModel = await UsuariosSistemasModel(this.sequelizeSianet)
 			this.estuClaveModel = await SmeEstuClaveModel(this.sequelizeSianet)
+			this.estudiantesModel = await EstudiantesModel(this.sequelizeSianet)
+			this.correoUebModel = await CorreoUebModel(this.sequelizeSianet)
 			this.initialized = true
 		} catch (error) {
 			throw new Error(`Service initialization failed: ${error.message}`)
@@ -212,12 +218,10 @@ class AuthService {
 	}
 
 	async _loginEstudiante(cedula, clave) {
-		const estudiante = await this.estuClaveModel.findOne({
-			where: { cedula, estado: 'A' },
-			order: [
-				['fecha', 'DESC'],
-				['hora', 'DESC'],
-			],
+		const estudiante = await this.estudiantesModel.findOne({
+			where: {
+				ced_est,
+			},
 		})
 
 		if (!estudiante) throw { statusCode: 401, message: 'Credenciales inválidas' }
