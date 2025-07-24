@@ -15,9 +15,10 @@ import { SmeNuevosEstuModel } from './sianet/sme_nuevos_estu-model.js'
 import { SmeVeriCorreoModel } from './sianet/sme_veri_correo-model.js'
 import { SmeNuevosEstu25Model } from './sianet/sme_nuevos_estu25-model.js'
 import { UsuariosSistemasModel } from './sianet/usuarios_sistemas-model.js'
+import { EstudiantesModel } from './sianet/estudiantes-model.js'
 
 export const initializeSianetModels = async () => {
-	console.log(`🔄 Inicializando modelos de ${env.DB_SIANET_NAME} Database...`)
+	console.log(`🔄 Inicializando modelos de ${env.DB_SIANET.NAME} Database...`)
 
 	const sequelize = await getSafeSianetSequelize()
 
@@ -31,6 +32,7 @@ export const initializeSianetModels = async () => {
 		thPersonal: ThPersonalModel(sequelize),
 		usuarios: UsuariosModel(sequelize),
 		usuariosSistemas: UsuariosSistemasModel(sequelize),
+		estudantes: EstudiantesModel(sequelize),
 	}
 
 	try {
@@ -43,8 +45,9 @@ export const initializeSianetModels = async () => {
 		await models.thPersonal
 		await models.usuarios
 		await models.usuariosSistemas
+		await models.estudantes
 
-		console.log(`✅ Modelos ${env.DB_SIANET_NAME} verificados y funcionando`)
+		console.log(`✅ Modelos ${env.DB_SIANET.NAME} verificados y funcionando`)
 	} catch (error) {
 		console.error('❌ Los modelos no pueden comunicarse con la DB:', error)
 		throw error
@@ -53,7 +56,7 @@ export const initializeSianetModels = async () => {
 }
 
 export const initializeCarnetModels = async () => {
-	console.log(`🔄 Inicializando modelos de ${env.DB_CARNET_NAME} Database...`)
+	console.log(`🔄 Inicializando modelos de ${env.DB_CARNET.NAME} Database...`)
 
 	const sequelize = await getSafeCarnetSequelize()
 
@@ -69,7 +72,7 @@ export const initializeCarnetModels = async () => {
 		await models.token
 		await models.codeQR
 		await models.admin
-		console.log(`✅ Modelos ${env.DB_CARNET_NAME} verificados y funcionando`)
+		console.log(`✅ Modelos ${env.DB_CARNET.NAME} verificados y funcionando`)
 	} catch (error) {
 		console.error('❌ Los modelos no pueden comunicarse con la DB:', error)
 		throw error
