@@ -220,7 +220,7 @@ class AuthService {
 	async _loginEstudiante(cedula, clave) {
 		const estudiante = await this.estudiantesModel.findOne({
 			where: {
-				ced_est,
+				ced_est: cedula,
 			},
 		})
 
@@ -231,7 +231,7 @@ class AuthService {
 
 		return {
 			user: {
-				cedula: estudiante.cedula,
+				cedula: estudiante.ced_est,
 				tipo: TYPE_USER.ESTUDIANTE,
 				perfil: TYPE_USER.ESTUDIANTE.toUpperCase(),
 			},
